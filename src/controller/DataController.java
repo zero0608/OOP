@@ -4,10 +4,7 @@ import model.Book;
 import model.BookReaderManagement;
 import model.Reader;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -30,6 +27,10 @@ public class DataController {
 
     public void openFileToRead(String fileName){
         try {
+            File file = new File(fileName);
+            if(file.exists()){
+                file.createNewFile();
+            }
             scanner = new Scanner(Paths.get(fileName), "UTF-8");
         }catch (Exception e){
             e.printStackTrace();

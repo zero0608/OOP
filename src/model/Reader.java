@@ -15,7 +15,11 @@ public class Reader {
     }
 
     public Reader(int readerID, String fullName, String address, String phoneNumber) {
-        this.readerID = readerID;
+        if(readerID == 0){
+            this.readerID = id++;
+        }else {
+            this.readerID = readerID;
+        }
         this.fullName = fullName;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -59,5 +63,15 @@ public class Reader {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Reader{" +
+                "readerID=" + readerID +
+                ", fullName='" + fullName + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

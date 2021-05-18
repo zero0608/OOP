@@ -2,6 +2,7 @@ package view;
 
 import controller.DataController;
 import model.Book;
+import model.Reader;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,16 +14,20 @@ public class View {
     public static void main(String[] args) {
         int choice = 0;
         var booksFileName = "BOOK.DAT";
+        var usersFileName = "REDER.DAT";
         var controller = new DataController();
         var books = new ArrayList<Book>();
+        var readers= new ArrayList<Reader>();
         var isBookChecked = false;
-
+        var isuserchecked = false;
         Scanner scanner = new Scanner(System.in);
 
         do {
             System.out.println("_______________MENU_______________");
             System.out.println("1. Thêm một đầu sách vào file.");
             System.out.println("2. Hiển thị danh sách các sách có trong file.");
+            System.out.println("3. Thêm một người đọc vào file.");
+            System.out.println("4. Hiển thị danh sách người đọc có trong file.");
             System.out.println("0. Thoát khỏi ứng dụng.");
             System.out.println("Bạn chọn ? ");
 
@@ -72,13 +77,49 @@ public class View {
                     books = controller.readBooksFromFile(booksFileName);
                     showBookInfo(books);
                     break;
+                case 3:
+                    if(!isuserchecked){
+                        checkReaderID(controller, usersFileName);
+                        isuserchecked = true;
+                    }
+                    String fullName,address, phoneNumber;
+                    System.out.println("Nhập tên reader: ");
+                    fullName = scanner.nextLine();
+
+                    System.out.println("Nhập tên địa chỉ: ");
+                     address = scanner.nextLine();
+
+                    System.out.println("Nhập tên sđt: ");
+                    phoneNumber = scanner.nextLine();
+
+                    Reader reader = new Reader(0, fullName, address, phoneNumber);
+                    controller.writeReaderToFile(reader,usersFileName);
+                    break;
+                case 4:
+                    readers = controller.readReadersFromFile(usersFileName);
+                    showReaderInfo(readers);
+                    break;
             }
         } while (choice != 0);
     }
+    private static void checkReaderID(DataController controller, String fileName) {
+        var readers = controller.readReadersFromFile(fileName);
+        if(readers.size() == 0){
+            ///
+        }else{
+            Reader.setId(readers.get(readers.size()-1).getReaderID() + 1);
+        }
 
+
+    }
     private static void checkBookID(DataController controller, String fileName) {
         var listBooks = controller.readBooksFromFile(fileName);
-        Book.setId(listBooks.get(listBooks.size()-1).getBookID() + 1);
+        if(listBooks.size() == 0){
+            ///
+        }else{
+            Book.setId(listBooks.get(listBooks.size()-1).getBookID() + 1);
+        }
+
     }
 
     private static void showBookInfo(ArrayList<Book> books) {
@@ -86,6 +127,12 @@ public class View {
         for (var b : books) {
             System.out.println(b);
         }
+    }
 
+    private static void showReaderInfo(ArrayList<Reader> readers) {
+        System.out.println("_________________Thông tin reader trong file_________________");
+        for (var b : readers) {
+            System.out.println(b);
+        }
     }
 }
